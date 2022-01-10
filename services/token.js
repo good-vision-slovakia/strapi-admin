@@ -27,16 +27,21 @@ const createToken = () => {
  * Creates a JWT token for an administration user
  * @param {object} user - admin user
  */
- const createJwtToken = async (user) => {
+const createJwtToken = async (user) => {
   const { options, secret } = getTokenOptions();
   const regions = await strapi.connections.default.raw(`
   SELECT json_build_object('region', region_id) as regions FROM regions__admin_users
   WHERE user_id = ?;`, [user.id])
 
   let regionsToClaims = [];
-  regions.rows.forEach(region => {
-    regionsToClaims.push(region.regions.region);
-  });
+
+  if (!_.isEmpty(regions.rows)) {
+    regions.rows.forEach(region => {
+      regionsToClaims.push(region.regions.region);
+    });
+  } else {
+    regionsToClaims.push(0);
+  }
 
   return jwt.sign({ id: user.id, regions: regionsToClaims }, secret, options);
 };
