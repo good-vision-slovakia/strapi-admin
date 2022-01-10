@@ -98,7 +98,7 @@ const redirectWithAuth = async ctx =>  {
 
   
   const jwt = await strapi.admin.services.token.createJwtToken(user);
-  console.log(jwt);
+
   const isProduction = strapi.config.environment === 'production';
 
   const cookiesOptions = { httpOnly: false, secure: isProduction, overwrite: true };

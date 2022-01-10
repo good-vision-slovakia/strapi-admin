@@ -25,7 +25,7 @@ module.exports = {
             error: new Error(info.message),
             provider: 'local',
           });
-          console.log('tu som ddssda')
+          
           return ctx.badRequest(info.message);
         }
 
@@ -38,7 +38,7 @@ module.exports = {
     },
     async ctx => {
       const { user } = ctx.state;
-      console.log('tu som' +user)
+      
       ctx.body = {
         data: {
           token: await strapi.admin.services.token.createJwtToken(user),
